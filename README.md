@@ -28,8 +28,6 @@
 
 * [Pre-requisites](#pre-requisites)
 * [Run Your First Test](#run-your-first-test)
-* [Parallel Testing With TestNG](#executing-parallel-tests-using-testng)
-* [Local Testing With TestNG](#testing-locally-hosted-or-privately-hosted-projects)
 
 ## Pre-requisites
 
@@ -47,7 +45,7 @@ Before you can start performing Java automation testing with Selenium, you would
 
 ```bash
 git clone https://github.com/LambdaTest/Java-TestNG-Selenium
-cd Java-TestNG-Selenium
+cd SmartUI
 ```
 
 You can also run the command below to check for outdated dependencies.
@@ -85,11 +83,15 @@ Make sure you have your LambdaTest credentials with you to run test automation s
 
 ```java
 DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("name", "Visual Ui Testing");
+        capabilities.setCapability("platform", "Windows 10");
         capabilities.setCapability("browserName", "chrome");
-        capabilities.setCapability("version", "70.0");
-        capabilities.setCapability("platform", "win10"); // If this cap isn't specified, it will just get the any available one
-        capabilities.setCapability("build", "LambdaTestSampleApp");
-        capabilities.setCapability("name", "LambdaTestJavaSample");
+        capabilities.setCapability("version","latest");
+        capabilities.setCapability("visual",true);
+        capabilities.setCapability("smartUI.project","Test_Project");
+        capabilities.setCapability("smartUI.options",sm);
+        capabilities.setCapability("smartUI.baseline",true);
+        capabilities.setCapability("selenium_version", "4.0.0");
 ```
 
 You can generate capabilities for your test requirements with the help of our inbuilt [Desired Capability Generator](https://www.lambdatest.com/capabilities-generator/?utm_source=github&utm_medium=repo&utm_campaign=Java-TestNG-Selenium).
@@ -104,91 +106,6 @@ mvn test -D suite=single.xml
 
 Your test results would be displayed on the test console (or command-line interface if you are using terminal/cmd) and on LambdaTest automation dashboard. 
 
-## Run Parallel Tests Using TestNG
-
-
-Here is an example `xml` file which would help you to run a single test on various browsers at the same time, you would also need to generate a testcase which makes use of **TestNG** framework parameters (`org.testng.annotations.Parameters`).
-
-```xml title="testng.xml"
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite thread-count="3" name="LambaTestSuite" parallel="tests">
-
-  <test name="WIN8TEST">
-  <parameter name="browser" value="firefox"/>
-  <parameter name="version" value="62.0"/>
-  <parameter name="platform" value="WIN8"/>
-    <classes>
-      <class name="LambdaTest.TestNGToDo"/>
-    </classes>
-  </test> <!-- Test -->
-
-  <test name="WIN10TEST">
-  <parameter name="browser" value="chrome"/>
-  <parameter name="version" value="79.0"/>
-  <parameter name="platform" value="WIN10"/>
-    <classes>
-      <class name="LambdaTest.TestNGToDo"/>
-    </classes>
-  </test> <!-- Test -->
-  <test name="MACTEST">
-  <parameter name="browser" value="safari"/>
-  <parameter name="version" value="11.0"/>
-  <parameter name="platform" value="macos 10.13"/>
-    <classes>
-      <class name="LambdaTest.TestNGToDo"/>
-    </classes>
-  </test> <!-- Test -->
-
-</suite>
-```
-
-### Executing Parallel Tests Using TestNG
-
-To run parallel tests using **TestNG**, we would have to execute the below commands in the terminal:
-
-- For the above example code
-  ```bash
-  mvn test
-  ```
-- For the cloned Java-TestNG-Selenium repo used to run our first sample test
-  ```bash
-  mvn test -D suite=parallel.xml
-  ```
-
-## Testing Locally Hosted Or Privately Hosted Projects
-
-You can test your locally hosted or privately hosted projects with LambdaTest Selenium grid using LambdaTest Tunnel. All you would have to do is set up an SSH tunnel using tunnel and pass toggle `tunnel = True` via desired capabilities. LambdaTest Tunnel establishes a secure SSH protocol based tunnel that allows you in testing your locally hosted or privately hosted pages, even before they are live.
-
-Refer our [LambdaTest Tunnel documentation](https://www.lambdatest.com/support/docs/testing-locally-hosted-pages/?utm_source=github&utm_medium=repo&utm_campaign=Java-TestNG-Selenium) for more information.
-
-Here’s how you can establish LambdaTest Tunnel.
-
-Download the binary file of:
-* [LambdaTest Tunnel for Windows](https://downloads.lambdatest.com/tunnel/v3/windows/64bit/LT_Windows.zip)
-* [LambdaTest Tunnel for macOS](https://downloads.lambdatest.com/tunnel/v3/mac/64bit/LT_Mac.zip)
-* [LambdaTest Tunnel for Linux](https://downloads.lambdatest.com/tunnel/v3/linux/64bit/LT_Linux.zip)
-
-Open command prompt and navigate to the binary folder.
-
-Run the following command:
-
-```bash
-LT -user {user’s login email} -key {user’s access key}
-```
-So if your user name is lambdatest@example.com and key is 123456, the command would be:
-
-```bash
-LT -user lambdatest@example.com -key 123456
-```
-Once you are able to connect **LambdaTest Tunnel** successfully, you would just have to pass on tunnel capabilities in the code shown below :
-
-**Tunnel Capability**
-
-```java
-DesiredCapabilities capabilities = new DesiredCapabilities();        
-        capabilities.setCapability("tunnel", true);
-```
 
 ## Tutorials 📙
 
